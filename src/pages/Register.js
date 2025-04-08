@@ -1,172 +1,279 @@
 import React, { useState } from "react";
-import { Box, Typography, TextField, Button, Checkbox, FormControlLabel, Divider } from "@mui/material";
-import { Link } from "react-router-dom";
+import {
+  Container,
+  TextField,
+  Grid,
+  Button,
+  Box,
+  Typography,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Modal,
+  Tabs,
+  Tab,
+  Divider,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import mountain from "../assets/mountain.png";
+import logo from "../assets/logo.png";
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    emailOrPhone: "",
-    password: "",
-    confirmPassword: "",
-    newsUpdates: false,
-    privacyPolicy: false,
-  });
+  const [mainTab, setMainTab] = useState("signup");
+  const [signupTab, setSignupTab] = useState("email");
+  const [otpOpen, setOtpOpen] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [phone, setPhone] = useState("");
+  const [countryCode, setCountryCode] = useState("+92");
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+  const navigate = useNavigate();
+
+  const handleMainTabChange = (_, newValue) => {
+    if (newValue === "login") {
+      navigate("/login");
+    } else {
+      setMainTab(newValue);
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form Data:", formData);
-    // TODO: Implement actual sign-up logic
+  const handleSignupTabChange = (_, newValue) => setSignupTab(newValue);
+
+  const handleOtpOpen = () => {
+    if (/^\d{10,15}$/.test(phone)) {
+      setOtpOpen(true);
+    } else {
+      alert("Please enter a valid phone number (10–15 digits).");
+    }
   };
+
+  const handleOtpClose = () => setOtpOpen(false);
+
+  const handleOtpChange = (e) => {
+    const value = e.target.value.replace(/\D/g, "");
+    if (value.length <= 4) setOtp(value);
+  };
+
+  const maxDate = new Date().toISOString().split("T")[0];
+
+  const renderSocialButtons = () => (
+    <>
+      <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+        <Button fullWidth variant="contained" sx={{ backgroundColor: "#3b5998" }}>
+          Sign up with Facebook
+        </Button>
+        <Button fullWidth variant="contained" sx={{ backgroundColor: "#db4437" }}>
+          Sign up with Google
+        </Button>
+      </Box>
+      <Divider sx={{ my: 2 }}>OR</Divider>
+    </>
+  );
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        backgroundColor: "#E5DDD7",
-      }}
-    >
-      <Box
-        sx={{
-          backgroundColor: "white",
-          padding: "30px",
-          borderRadius: "10px",
-          boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-          width: "100%",
-          maxWidth: "400px",
-          textAlign: "center",
-        }}
-      >
-        <Typography variant="h4" fontWeight="bold" mb={2}>
-          Sign Up
+    <Box sx={{ display: "flex", backgroundColor: "#f4f7f9", minHeight: "100vh" }}>
+      <Container maxWidth="md" sx={{ mt: 5, mb: 8, flex: 1 }}>
+        <Tabs value={mainTab} onChange={handleMainTabChange} centered sx={{ mb: 3 }}>
+          <Tab label="Sign Up" value="signup" />
+          <Tab label="Log In" value="login" />
+        </Tabs>
+        <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>
+          Sign up
         </Typography>
+        <Divider sx={{ mb: 3 }} />
 
-        {/* Social Sign-Up */}
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "#DB4437",
-            color: "white",
-            width: "100%",
-            mb: 1,
-            "&:hover": { backgroundColor: "#c1351e" },
-          }}
-        >
-          Sign Up with Google
-        </Button>
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "#3B5998",
-            color: "white",
-            width: "100%",
-            mb: 2,
-            "&:hover": { backgroundColor: "#2d4373" },
-          }}
-        >
-          Sign Up with Facebook
-        </Button>
+        {mainTab === "signup" && (
+          <>
+            <Tabs value={signupTab} onChange={handleSignupTabChange} centered>
+              <Tab label="Email" value="email" />
+              <Tab label="Phone" value="phone" />
+            </Tabs>
 
-        <Divider sx={{ my: 2 }}>OR</Divider>
+            <Box mt={4}>
+              {/* Email Sign Up */}
+              {signupTab === "email" && (
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>{renderSocialButtons()}</Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField fullWidth label="First Name" required />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField fullWidth label="Last Name" required />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <FormControl fullWidth>
+                      <InputLabel>Gender</InputLabel>
+                      <Select required defaultValue="">
+                        <MenuItem value="Male">Male</MenuItem>
+                        <MenuItem value="Female">Female</MenuItem>
+                        <MenuItem value="Other">Other</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      type="date"
+                      label="Date of Birth"
+                      fullWidth
+                      required
+                      InputLabelProps={{ shrink: true }}
+                      inputProps={{ max: maxDate }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField fullWidth label="Email Address" type="email" required />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField fullWidth label="Password" type="password" required />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField fullWidth label="Confirm Password" type="password" required />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button fullWidth variant="contained" sx={{ backgroundColor: "#247a7e" }}>
+                      Sign Up
+                    </Button>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" align="center" sx={{ mt: 2, color: "text.secondary" }}>
+                    {"*"}By clicking Sign Up, you agree to our{" "}
+                      <a href="/terms">Terms</a>, <a href="/privacy">Privacy Policy</a>, and{" "}
+                      <a href="/cookies">Cookies Policy</a>. You may receive SMS notifications from us and can opt out at any time.
+                    </Typography>
+                  </Grid>
+                </Grid>
+              )}
 
-        {/* Manual Sign-Up Form */}
-        <form onSubmit={handleSubmit}>
-          <TextField
-            label="Full Name"
-            name="fullName"
-            fullWidth
-            required
-            variant="outlined"
-            margin="dense"
-            value={formData.fullName}
-            onChange={handleChange}
-          />
-          <TextField
-            label="Email or Phone"
-            name="emailOrPhone"
-            type="text"
-            fullWidth
-            required
-            variant="outlined"
-            margin="dense"
-            value={formData.emailOrPhone}
-            onChange={handleChange}
-          />
-          <TextField
-            label="Password"
-            name="password"
-            type="password"
-            fullWidth
-            required
-            variant="outlined"
-            margin="dense"
-            value={formData.password}
-            onChange={handleChange}
-          />
-          <TextField
-            label="Confirm Password"
-            name="confirmPassword"
-            type="password"
-            fullWidth
-            required
-            variant="outlined"
-            margin="dense"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-          />
+              {/* Phone Sign Up */}
+              {signupTab === "phone" && (
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>{renderSocialButtons()}</Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField fullWidth label="First Name" required />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField fullWidth label="Last Name" required />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <FormControl fullWidth>
+                      <InputLabel>Gender</InputLabel>
+                      <Select required defaultValue="">
+                        <MenuItem value="Male">Male</MenuItem>
+                        <MenuItem value="Female">Female</MenuItem>
+                        <MenuItem value="Other">Other</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      type="date"
+                      label="Date of Birth"
+                      fullWidth
+                      required
+                      InputLabelProps={{ shrink: true }}
+                      inputProps={{ max: maxDate }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Box display="flex" gap={2}>
+                      <FormControl sx={{ minWidth: 100 }}>
+                        <Select value={countryCode} onChange={(e) => setCountryCode(e.target.value)}>
+                          <MenuItem value="+92">PK (+92)</MenuItem>
+                          <MenuItem value="+1">US (+1)</MenuItem>
+                          <MenuItem value="+44">UK (+44)</MenuItem>
+                        </Select>
+                      </FormControl>
+                      <TextField
+                        fullWidth
+                        label="Phone Number"
+                        type="tel"
+                        required
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
+                        inputProps={{ maxLength: 15 }}
+                      />
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField fullWidth label="Password" type="password" required />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField fullWidth label="Confirm Password" type="password" required />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      sx={{ backgroundColor: "#247a7e" }}
+                      onClick={handleOtpOpen}
+                    >
+                      Send OTP
+                    </Button>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" align="center" sx={{ mt: 2, color: "text.secondary" }}>
+                      {"*"}By clicking Sign Up, you agree to our{" "}
+                      <a href="/terms">Terms</a>, <a href="/privacy">Privacy Policy</a>, and{" "}
+                      <a href="/cookies">Cookies Policy</a>. You may receive SMS notifications from us and can opt out at any time.
+                    </Typography>
+                  </Grid>
+                </Grid>
+              )}
+            </Box>
+          </>
+        )}
 
-          {/* Checkboxes */}
-          <FormControlLabel
-            control={
-              <Checkbox name="newsUpdates" checked={formData.newsUpdates} onChange={handleChange} />
-            }
-            label="Receive news and updates"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                name="privacyPolicy"
-                checked={formData.privacyPolicy}
-                onChange={handleChange}
-                required
-              />
-            }
-            label="I agree to the Privacy Policy"
-          />
-
-          {/* Submit Button */}
-          <Button
-            type="submit"
-            variant="contained"
+        {/* OTP Modal */}
+        <Modal open={otpOpen} onClose={handleOtpClose}>
+          <Box
             sx={{
-              backgroundColor: "#2B7D8B",
-              color: "white",
-              width: "100%",
-              mt: 2,
-              "&:hover": { backgroundColor: "#216a70" },
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 300,
+              bgcolor: "white",
+              p: 4,
+              borderRadius: 2,
+              boxShadow: 24,
             }}
           >
-            Sign Up
-          </Button>
-        </form>
+            <Typography variant="h6" gutterBottom>
+              Enter OTP
+            </Typography>
+            <TextField
+              label="4-digit OTP"
+              value={otp}
+              onChange={handleOtpChange}
+              fullWidth
+              inputProps={{ inputMode: "numeric", pattern: "[0-9]*", maxLength: 4 }}
+            />
+            <Button
+              fullWidth
+              sx={{ mt: 2, backgroundColor: "#247a7e" }}
+              variant="contained"
+              onClick={() => alert("OTP Verified")}
+            >
+              Verify OTP
+            </Button>
+          </Box>
+        </Modal>
+      </Container>
 
-        {/* Already have an account? */}
-        <Typography variant="body2" mt={2}>
-          Already have an account?{" "}
-          <Link to="/login" style={{ color: "#2B7D8B", textDecoration: "none" }}>
-            Log in
-          </Link>
-        </Typography>
+      {/* Right Side - Images */}
+      <Box
+        sx={{
+          flex: 1,
+          display: { xs: "none", md: "flex" },
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 2,
+          p: 3,
+        }}
+      >
+        <Box component="img" src={mountain} alt="Mountain" sx={{ width: "70%", borderRadius: 2 }} />
+        <Box component="img" src={logo} alt="Logo" sx={{ width: "70%", borderRadius: 2 }} />
       </Box>
     </Box>
   );

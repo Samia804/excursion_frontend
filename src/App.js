@@ -17,6 +17,7 @@ import Profile from "./pages/Profile";
 import AdminPanel from "./pages/AdminPanel";
 import Contact from "./components/Contact";
 import JoinOperator from "./pages/JoinOperator"; // ✅ Ensure JoinOperator Page is Imported
+import ForgotPW from "./pages/ForgotPW";
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path="/join-operator" element={<JoinOperator />} />
         <Route path="/login" element={<Login />} /> {/* ✅ Added Login Route */}
         <Route path="/register" element={<Register />} /> {/* ✅ Added Register Route */}
+        <Route path="/forgot-password" element={<ForgotPW />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/custom-trip" element={<CustomTrip />} />
         <Route path="/chat" element={<Chat />} />
@@ -38,7 +40,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/services" element={<Services />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route path="/contact-us" element={<Contact />} />
 
       </Routes>
       <Footer />

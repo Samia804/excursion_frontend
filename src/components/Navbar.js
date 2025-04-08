@@ -1,84 +1,70 @@
 import React from "react";
-import { AppBar, Toolbar, Box, Button } from "@mui/material";
-import { Link } from "react-router-dom";
-import Logo from "../assets/logo.png"; // Ensure the logo path is correct
+import { AppBar, Toolbar, Box, Button, Link as MuiLink } from "@mui/material";
+import { Link, useLocation } from "react-router-dom";
+import Logo from "../assets/logo.png"; // Make sure this logo exists
 
 const Navbar = () => {
+  const location = useLocation();
+
+  const navLinks = [
+    { label: "Home", path: "/" },
+    { label: "Top deals", path: "/top-deals" },
+    { label: "Custom trip", path: "/custom-trip" },
+    { label: "Services", path: "/services" },
+    { label: "Contact us", path: "/contact-us" },
+  ];
+
   return (
-    <AppBar
-      position="absolute"
-      sx={{
-        backgroundColor: "white",
-        boxShadow: "none",
-        padding: "5px 0", // Reduced padding to decrease navbar height
-      }}
-    >
-      <Toolbar
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          width: "100%",
-          minHeight: "60px", // Adjusted to a proper height
-        }}
-      >
-        {/* Left Side - Logo */}
+    <AppBar position="static" elevation={0} sx={{ backgroundColor: "white", py: 1 }}>
+      <Toolbar sx={{ justifyContent: "space-between" }}>
+        {/* Logo */}
         <Box component={Link} to="/" sx={{ display: "flex", alignItems: "center" }}>
-          <img src={Logo} alt="Excursions Logo" style={{ height: "40px" }} /> {/* Adjusted height */}
+          <img src={Logo} alt="Excursions Logo" style={{ height: 40 }} />
         </Box>
 
-        {/* Middle - Navigation Links */}
-        <Box sx={{ display: "flex", gap: "15px" }}>
-          {[
-            { text: "Home", path: "/" },
-            { text: "Join as Tour Operator", path: "/join-operator" },
-            { text: "Custom Trip", path: "/custom-trip" },
-            { text: "Services", path: "/services" },
-            { text: "Contact Us", path: "/contact" },
-          ].map((item, index) => (
-            <Button
-              key={index}
+        {/* Center Nav Links */}
+        <Box sx={{ display: "flex", gap: 4 }}>
+          {navLinks.map((link) => (
+            <MuiLink
+              key={link.path}
               component={Link}
-              to={item.path}
+              to={link.path}
+              underline="none"
               sx={{
-                color: "black",
-                fontSize: "1rem",
-                transition: "color 0.3s ease-in-out",
-                "&:hover": { color: "#2B7D8B" },
+                fontSize: 16,
+                fontWeight: location.pathname === link.path ? 600 : 400,
+                color: location.pathname === link.path ? "#247a7e" : "#333",
+                "&:hover": { color: "#247a7e" },
               }}
             >
-              {item.text}
-            </Button>
+              {link.label}
+            </MuiLink>
           ))}
         </Box>
 
-        {/* Right Side - Auth Links */}
-        <Box sx={{ display: "flex", gap: "10px" }}>
-          <Button
-            component={Link}
-            to="/login"
-            sx={{
-              color: "black",
-              fontSize: "1rem",
-              transition: "color 0.3s ease-in-out",
-              "&:hover": { color: "#2B7D8B" },
-            }}
-          >
-            Login
-          </Button>
-          <Button
+        {/* Right - Register & Log In */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <MuiLink
             component={Link}
             to="/register"
-            sx={{
-              color: "black",
-              fontSize: "1rem",
-              border: "1px solid black",
-              padding: "5px 12px",
-              transition: "color 0.3s ease-in-out, border-color 0.3s ease-in-out",
-              "&:hover": { color: "#2B7D8B", borderColor: "#2B7D8B" },
-            }}
+            underline="none"
+            sx={{ fontSize: 16, color: "#247a7e", fontWeight: 500 }}
           >
             Register
+          </MuiLink>
+          <Button
+            variant="contained"
+            sx={{
+              textTransform: "none",
+              backgroundColor: "#247a7e",
+              "&:hover": { backgroundColor: "#1e6c70" },
+              borderRadius: "4px",
+              px: 3,
+            }}
+            component={Link}
+            to="/login"
+          >
+            Log In
           </Button>
         </Box>
       </Toolbar>

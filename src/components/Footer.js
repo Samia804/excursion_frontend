@@ -1,92 +1,81 @@
-import React from 'react';
-import { Container, Typography, Grid, Link } from '@mui/material';
+import React from "react";
+import { Box, Container, Grid, Typography, Link, IconButton, Divider } from "@mui/material";
+import { Facebook, Twitter, Instagram } from "lucide-react";
 
-function Footer() {
+const Footer = () => {
   return (
-    <Container
-      maxWidth="lg"
-      sx={{
-        py: 6,
-        borderTop: '1px solid #e0e0e0',
-        mt: 'auto',
-      }}
-    >
-      <Grid container spacing={4}>
-        {/* About Section */}
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="h6" gutterBottom>
-            About
-          </Typography>
-          <Link href="#" color="inherit" display="block">
-            How it works
-          </Link>
-          <Link href="#" color="inherit" display="block">
-            Featured
-          </Link>
-          <Link href="#" color="inherit" display="block">
-            Partnership
-          </Link>
-          <Link href="#" color="inherit" display="block">
-            Business Relation
-          </Link>
+    <Box sx={{ backgroundColor: "#247a7e", color: "white", pt: 6 }}>
+      <Container maxWidth="lg">
+        <Grid container spacing={4}>
+          {/* Brand & Social */}
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="h6" gutterBottom>
+              Excursions
+            </Typography>
+            <Typography variant="body2" sx={{ color: "#d9f2f3", maxWidth: 240, mb: 2 }}>
+              Our vision is to provide convenience and help increase your sales business.
+            </Typography>
+            <Box>
+              <IconButton sx={{ color: "white" }}><Facebook size={20} /></IconButton>
+              <IconButton sx={{ color: "white" }}><Twitter size={20} /></IconButton>
+              <IconButton sx={{ color: "white" }}><Instagram size={20} /></IconButton>
+            </Box>
+          </Grid>
+
+          {/* About */}
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="h6" gutterBottom>About</Typography>
+            {["How it works", "Featured", "Partnership", "Business Relation"].map((item, idx) => (
+              <Link key={idx} href="#" underline="none" sx={{ color: "#d9f2f3", display: "block", mb: 0.5 }}>
+                {item}
+              </Link>
+            ))}
+          </Grid>
+
+          {/* Community */}
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="h6" gutterBottom>Community</Typography>
+            {["Events", "Blog", "Podcast", "Invite a friend"].map((item, idx) => (
+              <Link key={idx} href="#" underline="none" sx={{ color: "#d9f2f3", display: "block", mb: 0.5 }}>
+                {item}
+              </Link>
+            ))}
+          </Grid>
+
+          {/* Socials */}
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="h6" gutterBottom>Socials</Typography>
+            {["Discord", "Instagram", "Twitter", "Facebook"].map((item, idx) => (
+              <Link key={idx} href="#" underline="none" sx={{ color: "#d9f2f3", display: "block", mb: 0.5 }}>
+                {item}
+              </Link>
+            ))}
+          </Grid>
         </Grid>
 
-        {/* Community Section */}
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="h6" gutterBottom>
-            Community
-          </Typography>
-          <Link href="#" color="inherit" display="block">
-            Events
-          </Link>
-          <Link href="#" color="inherit" display="block">
-            Blog
-          </Link>
-          <Link href="#" color="inherit" display="block">
-            Podcast
-          </Link>
-          <Link href="#" color="inherit" display="block">
-            Invite a friend
-          </Link>
-        </Grid>
+        <Divider sx={{ backgroundColor: "#409ca0", my: 4 }} />
 
-        {/* Socials Section */}
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="h6" gutterBottom>
-            Socials
-          </Typography>
-          <Link href="#" color="inherit" display="block">
-            Discord
-          </Link>
-          <Link href="#" color="inherit" display="block">
-            Instagram
-          </Link>
-          <Link href="#" color="inherit" display="block">
-            Twitter
-          </Link>
-          <Link href="#" color="inherit" display="block">
-            Facebook
-          </Link>
+        {/* Bottom Bar */}
+        <Grid container justifyContent="space-between" alignItems="center">
+          <Grid item>
+            <Typography variant="body2" sx={{ color: "#d9f2f3" }}>
+              ©2022 Company Name. All rights reserved
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Box display="flex" gap={2}>
+              <Link href="#" underline="none" sx={{ color: "#d9f2f3", fontSize: 14 }}>
+                Privacy & Policy
+              </Link>
+              <Link href="#" underline="none" sx={{ color: "#d9f2f3", fontSize: 14 }}>
+                Terms & Condition
+              </Link>
+            </Box>
+          </Grid>
         </Grid>
-
-        {/* Copyright Section */}
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="h6" gutterBottom>
-            Company Name
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            ©2022 Company Name. All rights reserved
-          </Typography>
-          <Link href="#" color="inherit" display="block">
-            Privacy & Policy
-          </Link>
-          <Link href="#" color="inherit" display="block">
-            Terms & Condition
-          </Link>
-        </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </Box>
   );
-}
+};
 
 export default Footer;

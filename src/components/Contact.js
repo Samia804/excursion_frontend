@@ -1,114 +1,178 @@
 import React from "react";
-import { Box, Typography, TextField, Button, Grid, Paper } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Container,
+  Grid,
+  TextField,
+  Button,
+  Divider,
+} from "@mui/material";
+
+// Images
+import heroImage from "../assets/hero.png";
+import img1 from "../assets/mountain.png";
+import img2 from "../assets/mountain.png";
+import img3 from "../assets/mountain.png";
+import img4 from "../assets/mountain.png";
 
 const Contact = () => {
   return (
-    <Box sx={{ textAlign: "center", color: "#333" }}>
-      {/* Hero Section */}
+    <>
+      {/* =================== Hero Section =================== */}
       <Box
         sx={{
-          backgroundImage: `url('/assets/contact-hero.jpg')`, // Ensure this image exists
+          height: 400,
+          backgroundImage: `url(${heroImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          height: "350px",
           display: "flex",
-          alignItems: "center",
+          flexDirection: "column",
           justifyContent: "center",
-          color: "white",
+          alignItems: "center",
           textAlign: "center",
+          color: "white",
+          px: 2,
         }}
       >
-        <Typography variant="h3" fontWeight="bold">
-          "We're Here to Help You!"
+        <Typography variant="h4" fontWeight="bold">
+          We’re Here to Help You!
+        </Typography>
+        <Typography variant="body1" sx={{ mt: 2, maxWidth: 600 }}>
+          Have questions? Drop us a message and we’ll get back to you shortly.
         </Typography>
       </Box>
 
-      {/* Contact Form */}
-      <Box sx={{ width: "80%", margin: "auto", mt: 5 }}>
-        <Typography variant="h4" fontWeight="bold">
+      {/* =================== Who We Are + Our Vision =================== */}
+      <Container sx={{ py: 8 }}>
+        <Grid container spacing={6} alignItems="center">
+          {/* Who We Are Section */}
+          <Grid item xs={12} md={6}>
+            <Typography variant="h5" fontWeight="bold" color="#6b3b1f" gutterBottom>
+              Who we are
+            </Typography>
+            <Typography variant="body1" sx={{ mb: 2 }}>
+              We are passionate explorers, dedicated to providing seamless travel experiences.
+              Our mission is to connect travelers with nature, cultures, and unforgettable
+              journeys around the globe. With our personalized itineraries and expert support,
+              we make your journey stress-free and enjoyable.
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Box display="flex" flexDirection="column" gap={2}>
+              <Box component="img" src={img3} alt="Explorer" sx={{ width: "100%", borderRadius: 2 }} />
+            </Box>
+          </Grid>
+
+          {/* Our Vision Section */}
+          <Grid item xs={12} md={6} order={{ xs: 2, md: 1 }}>
+            <Box display="flex" flexDirection="column" gap={2}>
+              <Box component="img" src={img4} alt="Journey" sx={{ width: "100%", borderRadius: 2 }} />
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={6} order={{ xs: 1, md: 2 }}>
+            <Typography variant="h5" fontWeight="bold" color="#6b3b1f" gutterBottom>
+              Our Vision
+            </Typography>
+            <Typography variant="body1" sx={{ mb: 2 }}>
+              To create immersive and sustainable travel experiences that inspire people
+              to connect more deeply with communities, positively impact the environment,
+              and discover the world with purpose. Join us and redefine how you travel forever.
+            </Typography>
+          </Grid>
+        </Grid>
+      </Container>
+
+      {/* =================== Contact Form Section =================== */}
+      <Container sx={{ py: 8 }}>
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          sx={{ mb: 4, color: "#6b3b1f", borderBottom: "2px solid #ddd", pb: 1 }}
+        >
           Get in Touch with Us
         </Typography>
 
-        <Grid container spacing={3} sx={{ mt: 3 }}>
-          {/* Form */}
+        <Grid container spacing={6}>
+          {/* Left Side: Contact Form */}
           <Grid item xs={12} md={6}>
-            <TextField fullWidth label="Name" variant="outlined" sx={{ mb: 2 }} />
-            <TextField fullWidth label="Email" variant="outlined" sx={{ mb: 2 }} />
-            <TextField fullWidth label="Message" multiline rows={4} variant="outlined" sx={{ mb: 2 }} />
-            <Button fullWidth variant="contained" sx={{ backgroundColor: "#2B7D8B", "&:hover": { backgroundColor: "#1E5F6A" }, mb: 2 }}>
-              Contact Us Now
-            </Button>
-            <Button fullWidth variant="contained" sx={{ backgroundColor: "#1E5F6A", "&:hover": { backgroundColor: "#14454D" } }}>
-              Send a Message
-            </Button>
+            <Box component="form">
+              <TextField fullWidth label="Name" variant="outlined" margin="normal" />
+              <TextField fullWidth label="Email" type="email" variant="outlined" margin="normal" />
+              <TextField
+                fullWidth
+                label="Message"
+                multiline
+                rows={4}
+                variant="outlined"
+                margin="normal"
+              />
+              <Box sx={{ mt: 2 }}>
+                {/* Single Send Button */}
+                <Button
+                  fullWidth
+                  variant="contained"
+                  sx={{ backgroundColor: "#3e8b8f", textTransform: "none" }}
+                >
+                  Send a Message
+                </Button>
+              </Box>
+            </Box>
           </Grid>
 
-          {/* Image Section */}
-          <Grid item xs={12} md={6} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Box component="img" src="/assets/contact-img1.jpg" alt="Mountain" sx={{ width: "100%", borderRadius: "8px" }} />
-            <Box sx={{ display: "flex", gap: 2 }}>
-              <Box component="img" src="/assets/contact-img2.jpg" alt="Lake" sx={{ width: "50%", borderRadius: "8px" }} />
-              <Box component="img" src="/assets/contact-img3.jpg" alt="Snowy Peaks" sx={{ width: "50%", borderRadius: "8px" }} />
+          {/* Right Side: Destination Images */}
+          <Grid item xs={12} md={6}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <img
+                src={img1}
+                alt="lake view"
+                style={{ width: "100%", borderRadius: 8 }}
+              />
+              <img
+                src={img2}
+                alt="mountains"
+                style={{ width: "100%", borderRadius: 8 }}
+              />
             </Box>
           </Grid>
         </Grid>
-      </Box>
+      </Container>
 
-      {/* Contact Details */}
-      <Box sx={{ width: "80%", margin: "auto", mt: 5, mb: 5 }}>
-        <Grid container spacing={3}>
+      {/* =================== Footer Contact Info Section =================== */}
+      <Divider />
+      <Container sx={{ py: 6 }}>
+        <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
-            <Typography variant="h6" fontWeight="bold" sx={{ color: "#8B5E3C" }}>
+            <Typography fontWeight="bold" gutterBottom>
               Office Address
             </Typography>
-            <Typography>Excursion Office</Typography>
-            <Typography>123-B, Main Boulevard, Johar Town, Lahore, Pakistan</Typography>
+            <Typography variant="body2">
+              Excursion Office<br />
+              123-B, Main Boulevard, Johar Town,<br />
+              Lahore, Pakistan
+            </Typography>
           </Grid>
-
           <Grid item xs={12} md={4}>
-            <Typography variant="h6" fontWeight="bold" sx={{ color: "#8B5E3C" }}>
+            <Typography fontWeight="bold" gutterBottom>
               Email Us
             </Typography>
-            <Typography>support@excursionoffice.com</Typography>
-            <Typography>Reach out to us for queries, feedback, or assistance.</Typography>
+            <Typography variant="body2">
+              support@excursionoffice.com<br />
+              Reach out to us for queries, feedback, or assistance.
+            </Typography>
           </Grid>
-
           <Grid item xs={12} md={4}>
-            <Typography variant="h6" fontWeight="bold" sx={{ color: "#8B5E3C" }}>
+            <Typography fontWeight="bold" gutterBottom>
               Call Us
             </Typography>
-            <Typography>+92 42 12345678</Typography>
-            <Typography>Feel free to call us for any support or information during office hours.</Typography>
+            <Typography variant="body2">
+              +92 42 12345678<br />
+              Feel free to call us for any support or information during office hours.
+            </Typography>
           </Grid>
         </Grid>
-      </Box>
-
-      {/* Footer */}
-      <Box sx={{ backgroundColor: "#2B7D8B", color: "white", padding: "20px", mt: 5 }}>
-        <Grid container spacing={3} justifyContent="center">
-          <Grid item xs={12} sm={3}>
-            <Typography variant="h6">Excursion</Typography>
-            <Typography sx={{ fontSize: "14px" }}>Our mission is to provide convenience and happiness in your travel experiences.</Typography>
-          </Grid>
-
-          <Grid item xs={12} sm={3}>
-            <Typography variant="h6">Community</Typography>
-            <Typography sx={{ fontSize: "14px" }}>Events</Typography>
-            <Typography sx={{ fontSize: "14px" }}>Blog</Typography>
-            <Typography sx={{ fontSize: "14px" }}>Partnership</Typography>
-          </Grid>
-
-          <Grid item xs={12} sm={3}>
-            <Typography variant="h6">Socials</Typography>
-            <Typography sx={{ fontSize: "14px" }}>Discord</Typography>
-            <Typography sx={{ fontSize: "14px" }}>Instagram</Typography>
-            <Typography sx={{ fontSize: "14px" }}>Twitter</Typography>
-            <Typography sx={{ fontSize: "14px" }}>Facebook</Typography>
-          </Grid>
-        </Grid>
-        <Typography sx={{ textAlign: "center", mt: 2, fontSize: "12px" }}>Terms & Conditions</Typography>
-      </Box>
-    </Box>
+      </Container>
+    </>
   );
 };
 
