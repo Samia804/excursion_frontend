@@ -6,12 +6,14 @@ import Logo from "../assets/logo.png"; // Make sure this logo exists
 const Navbar = () => {
   const location = useLocation();
 
+  // Updated with the new link
   const navLinks = [
     { label: "Home", path: "/" },
     { label: "Top deals", path: "/top-deals" },
     { label: "Custom trip", path: "/custom-trip" },
     { label: "Services", path: "/services" },
     { label: "Contact us", path: "/contact-us" },
+    { label: "Join as Tour Operator", path: "/join-operator" }, // 👈 New route
   ];
 
   return (

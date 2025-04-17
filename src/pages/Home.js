@@ -1,142 +1,322 @@
-import React from "react";
-import { Box, Grid, Typography, Button, Paper } from "@mui/material";
-import HeroImage from "../assets/hero.png"; // Ensure the correct image path
-import AboutImage from "../assets/about.png";
-import Destination1 from "../assets/destination1.png";
-import Destination2 from "../assets/destination2.png";
-import Destination3 from "../assets/destination3.png";
-import Destination4 from "../assets/destination4.png";
-import Destination5 from "../assets/destination5.png";
-import Destination6 from "../assets/destination6.png";
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  Typography,
+  TextField,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Footprints, Award, Sparkles, CheckCircle } from "lucide-react";
 
+// Images
+import heroImage from "../assets/hero.png";
+import destination1 from "../assets/destination1.png";
+import destination2 from "../assets/destination2.png";
+import destination3 from "../assets/destination3.png";
+import destination4 from "../assets/destination4.png";
+import aboutImage from "../assets/mountain.png";
+
+// Destinations to show in Top Destinations section
 const destinations = [
-  { title: "Majestic Mountains", img: Destination1 },
-  { title: "Serene Valleys", img: Destination2 },
-  { title: "Crystal Lakes", img: Destination3 },
-  { title: "Snowy Peaks", img: Destination4 },
-  { title: "Green Meadows", img: Destination5 },
-  { title: "Mystic Forests", img: Destination6 },
-];
-
-const services = [
-  { title: "24/7 Customer Support", description: "We’re here to help anytime." },
-  { title: "Plan Travel Anywhere", description: "Global trip planning at your fingertips." },
-  { title: "Risk-Free Booking", description: "Secure and flexible reservations." },
-  { title: "Flexible Payment", description: "Multiple options for easy transactions." },
+  {
+    title: "Naran & Kaghan Valley – Scenic beauty and alpine lakes.",
+    image: destination1,
+  },
+  {
+    title:
+      "Hunza & Skardu – Mesmerizing landscapes, cultural heritage, and adventure.",
+    image: destination2,
+  },
+  { title: "Swat & Malam Jabba – Ideal for nature lovers.", image: destination3 },
+  { title: "Fairy Meadows & Deosai – A paradise for trekkers.", image: destination4 },
+  { title: "Fairy Meadows & Deosai – A paradise for trekkers.", image: destination4 },
+  { title: "Murree & Ayubia – A quick escape into the serene hills.", image: destination2 },
+  { title: "Lahore & Islamabad City Tours – A blend of history and culture.", image: destination3 },
+  { title: "Lahore & Islamabad City Tours – A blend of history and culture.", image: destination1 },
 ];
 
 const Home = () => {
+  const [searchQuery, setSearchQuery] = useState(""); // Input state
+  const navigate = useNavigate(); // For redirecting to chat page
+
+  // Called on search button or pressing Enter
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      navigate(`/chat?query=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
   return (
-    <Box sx={{ textAlign: "center" }}>
-      {/* Hero Section */}
+    <>
+      {/* Hero Section with background and search box */}
       <Box
         sx={{
-          backgroundImage: `url(${HeroImage})`,
+          height: 500,
+          backgroundImage: `url(${heroImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          height: "400px",
           display: "flex",
-          alignItems: "center",
           justifyContent: "center",
+          alignItems: "center",
           color: "white",
-          flexDirection: "column",
+          textAlign: "center",
+          px: 2,
         }}
       >
-        <Typography variant="h3" fontWeight="bold">
-          Hi, I’m Lara – Your Personal Travel Agent
-        </Typography>
-        <Typography variant="h6" sx={{ mt: 2 }}>
-          Plan your perfect trip with expert guidance.
-        </Typography>
-        <Button variant="contained" sx={{ mt: 2, backgroundColor: "#2B7D8B", "&:hover": { backgroundColor: "#1E5F6A" } }}>
-          Get Started
-        </Button>
+        <Box>
+          <Typography variant="h4" fontWeight="bold" gutterBottom>
+            Hi, I'm Lara—Your Personal Travel Agent
+          </Typography>
+
+          {/* Search Input & Button */}
+          <Box
+            sx={{
+              mt: 3,
+              p: 2,
+              backgroundColor: "rgba(255,255,255,0.9)",
+              borderRadius: 2,
+              display: "flex",
+              gap: 2,
+              width: { xs: "90%", md: "70%" },
+              mx: "auto",
+            }}
+          >
+            <TextField
+              fullWidth
+              placeholder="Search your destination..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              // Allow Enter key to trigger search
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSearch();
+              }}
+            />
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: "#247a7e" }}
+              onClick={handleSearch}
+            >
+              Search
+            </Button>
+          </Box>
+        </Box>
       </Box>
 
       {/* Why Choose Us Section */}
-      <Typography variant="h4" sx={{ fontWeight: "bold", mt: 5 }}>
-        Why Choose Us?
-      </Typography>
-      <Grid container spacing={3} justifyContent="center" sx={{ mt: 2 }}>
-        {["Convenience", "Local Expertise", "Cost-Efficient"].map((feature, index) => (
-          <Grid item xs={12} sm={4} key={index}>
-            <Paper elevation={3} sx={{ padding: "20px" }}>
-              <Typography variant="h6">{feature}</Typography>
-              <Typography sx={{ color: "gray", mt: 1 }}>We provide the best travel experience tailored to your needs.</Typography>
-            </Paper>
+      <Container sx={{ py: 8, textAlign: "center" }}>
+        <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ color: "#894e06" }}>
+          Why Choose Us?
+        </Typography>
+
+        <Grid container spacing={4} justifyContent="center" mt={4}>
+          {/* Card 1 */}
+          <Grid item xs={12} sm={4}>
+            <Box>
+              <Box
+                sx={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: "50%",
+                  backgroundColor: "#f0e8e4",
+                  mx: "auto",
+                  mb: 2,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Footprints color="#247a7e" size={32} />
+              </Box>
+              <Typography variant="h6" sx={{ color: "#894e06", fontWeight: "bold" }}>
+                Curated Experiences
+              </Typography>
+              <Typography variant="body2" sx={{ color: "#333", maxWidth: 280, mx: "auto", mt: 1 }}>
+                Handpicked excursions designed to give you the best of every destination.
+              </Typography>
+            </Box>
           </Grid>
-        ))}
-      </Grid>
+
+          {/* Card 2 */}
+          <Grid item xs={12} sm={4}>
+            <Box>
+              <Box
+                sx={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: "50%",
+                  backgroundColor: "#f0e8e4",
+                  mx: "auto",
+                  mb: 2,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Award color="#247a7e" size={32} />
+              </Box>
+              <Typography variant="h6" sx={{ color: "#894e06", fontWeight: "bold" }}>
+                Local Expertise
+              </Typography>
+              <Typography variant="body2" sx={{ color: "#333", maxWidth: 280, mx: "auto", mt: 1 }}>
+                Explore with trusted local guides who know the hidden spots.
+              </Typography>
+            </Box>
+          </Grid>
+
+          {/* Card 3 */}
+          <Grid item xs={12} sm={4}>
+            <Box>
+              <Box
+                sx={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: "50%",
+                  backgroundColor: "#f0e8e4",
+                  mx: "auto",
+                  mb: 2,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Sparkles color="#247a7e" size={32} />
+              </Box>
+              <Typography variant="h6" sx={{ color: "#894e06", fontWeight: "bold" }}>
+                Custom Trips
+              </Typography>
+              <Typography variant="body2" sx={{ color: "#333", maxWidth: 280, mx: "auto", mt: 1 }}>
+                Create a personalized trip tailored to your interests, pace, and schedule.
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
+      </Container>
 
       {/* Top Destinations Section */}
-      <Typography variant="h4" sx={{ fontWeight: "bold", mt: 5 }}>
-        Top Destinations
-      </Typography>
-      <Grid container spacing={3} justifyContent="center" sx={{ mt: 2 }}>
-        {destinations.map((dest, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Paper elevation={3} sx={{ padding: "10px", textAlign: "center" }}>
-              <Box component="img" src={dest.img} alt={dest.title} sx={{ width: "100%", borderRadius: "8px" }} />
-              <Typography variant="h6" sx={{ mt: 1 }}>{dest.title}</Typography>
-            </Paper>
-          </Grid>
-        ))}
-      </Grid>
+      <Container sx={{ py: 6 }}>
+        <Typography variant="h4" fontWeight="bold" textAlign="center" gutterBottom>
+          Top Destinations
+        </Typography>
+        <Typography textAlign="center" mb={4} color="text.secondary">
+          Explore the most breathtaking locations in Pakistan curated just for you.
+        </Typography>
+
+        <Grid container spacing={4}>
+          {destinations.map((dest, i) => (
+            <Grid item xs={12} sm={6} md={3} key={i}>
+              <Box
+                sx={{
+                  height: 320,
+                  borderRadius: 2,
+                  backgroundImage: `url(${dest.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  position: "relative",
+                  color: "#fff",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box sx={{ p: 1.2, display: "flex", justifyContent: "space-between" }}>
+                  <Typography
+                    sx={{
+                      fontSize: "0.8rem",
+                      backgroundColor: "#ffffff30",
+                      px: 1,
+                      borderRadius: 1,
+                    }}
+                  >
+                    Top Place
+                  </Typography>
+                  <span>🤍</span>
+                </Box>
+
+                <Box sx={{ p: 2, background: "rgba(0,0,0,0.5)" }}>
+                  <Typography fontSize="0.85rem">{dest.title}</Typography>
+                  <Box display="flex" justifyContent="space-between" mt={1}>
+                    <Typography fontSize="0.75rem">Destination Travel</Typography>
+                    <Button size="small" variant="contained" sx={{ backgroundColor: "#8e502b" }}>
+                      Explore
+                    </Button>
+                  </Box>
+                </Box>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
 
       {/* About Us Section */}
-      <Typography variant="h4" sx={{ fontWeight: "bold", mt: 5 }}>
-        About Us
-      </Typography>
-      <Grid container spacing={3} justifyContent="center" sx={{ mt: 2 }}>
-        <Grid item xs={12} md={6}>
-          <Box component="img" src={AboutImage} alt="About Us" sx={{ width: "100%", borderRadius: "8px" }} />
-        </Grid>
-        <Grid item xs={12} md={6} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <Box>
-            <Typography variant="h6">We are dedicated to making your trips hassle-free and memorable.</Typography>
-            <Button variant="contained" sx={{ mt: 2, backgroundColor: "#2B7D8B", "&:hover": { backgroundColor: "#1E5F6A" } }}>
+      <Container sx={{ py: 8 }}>
+        <Typography
+          variant="h4"
+          fontWeight="bold"
+          textAlign="center"
+          gutterBottom
+          sx={{ color: "#894e06" }}
+        >
+          About us
+        </Typography>
+        <Typography
+          textAlign="center"
+          color="text.secondary"
+          mb={4}
+          maxWidth="sm"
+          mx="auto"
+        >
+          Learn ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore e
+        </Typography>
+
+        <Grid container spacing={6} alignItems="center">
+          {/* About image */}
+          <Grid item xs={12} md={6}>
+            <img
+              src={aboutImage}
+              alt="Road through mountain"
+              style={{ width: "100%", borderRadius: 8 }}
+              onError={(e) =>
+                (e.target.src = "https://via.placeholder.com/600x400?text=About+Us+Image")
+              }
+            />
+          </Grid>
+
+          {/* About content */}
+          <Grid item xs={12} md={6}>
+            {[
+              {
+                title: "Customer Support",
+                desc: "We're just a message away to help with any questions or needs you may have.",
+              },
+              {
+                title: "Best Price Guaranteed",
+                desc: "Enjoy the best for your adventure with our price-match guarantee.",
+              },
+              {
+                title: "Many Location",
+                desc: "Choose from a wide variety of destinations, from iconic sites to hidden gems.",
+              },
+            ].map((item, idx) => (
+              <Box key={idx} display="flex" alignItems="flex-start" mb={3}>
+                <CheckCircle color="#247a7e" size={28} style={{ marginRight: 12 }} />
+                <Box>
+                  <Typography fontWeight="bold" color="#894e06">
+                    {item.title}
+                  </Typography>
+                  <Typography color="text.secondary">{item.desc}</Typography>
+                </Box>
+              </Box>
+            ))}
+
+            <Button variant="contained" sx={{ backgroundColor: "#247a7e" }}>
               Learn More
             </Button>
-          </Box>
+          </Grid>
         </Grid>
-      </Grid>
-
-      {/* Services Section */}
-      <Typography variant="h4" sx={{ fontWeight: "bold", mt: 5 }}>
-        Services
-      </Typography>
-      <Grid container spacing={3} justifyContent="center" sx={{ mt: 2 }}>
-        {services.map((service, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
-            <Paper elevation={3} sx={{ padding: "20px", backgroundColor: "#FAEBD7" }}>
-              <Typography variant="h6">{service.title}</Typography>
-              <Typography sx={{ color: "gray", mt: 1 }}>{service.description}</Typography>
-            </Paper>
-          </Grid>
-        ))}
-      </Grid>
-
-      {/* Gradient Why Choose Us Section */}
-      <Box sx={{ mt: 5, padding: "40px", background: "linear-gradient(to right, #2B7D8B, #1E5F6A)", color: "white" }}>
-        <Typography variant="h5">Why Choose Us?</Typography>
-        <Typography sx={{ mt: 1 }}>We make traveling easy and stress-free for you.</Typography>
-      </Box>
-
-      {/* Customer Reviews */}
-      <Typography variant="h4" sx={{ fontWeight: "bold", mt: 5 }}>
-        Trusted by Thousands of Happy Customers
-      </Typography>
-      <Grid container spacing={3} justifyContent="center" sx={{ mt: 2, mb: 5 }}>
-        {["Great Experience!", "Loved the Service!", "Will Book Again!"].map((review, index) => (
-          <Grid item xs={12} sm={4} key={index}>
-            <Paper elevation={3} sx={{ padding: "20px" }}>
-              <Typography variant="h6">{review}</Typography>
-              <Typography sx={{ color: "gray", mt: 1 }}>⭐⭐⭐⭐⭐</Typography>
-            </Paper>
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
+      </Container>
+    </>
   );
 };
 

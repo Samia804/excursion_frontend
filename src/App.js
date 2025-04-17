@@ -18,6 +18,7 @@ import AdminPanel from "./pages/AdminPanel";
 import Contact from "./components/Contact";
 import JoinOperator from "./pages/JoinOperator"; // ✅ Ensure JoinOperator Page is Imported
 import ForgotPW from "./pages/ForgotPW";
+import Resume from "./pages/Resume";
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/services" element={<Services />} />
         <Route path="/contact-us" element={<Contact />} />
+        <Route path="/resume" element={<Resume />} />
 
       </Routes>
       <Footer />

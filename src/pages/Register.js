@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import mountain from "../assets/mountain.png";
-import logo from "../assets/logo.png";
+import logo from "../assets/biglogo.png";
 
 const Register = () => {
   const [mainTab, setMainTab] = useState("signup");
@@ -28,33 +28,23 @@ const Register = () => {
   const [countryCode, setCountryCode] = useState("+92");
 
   const navigate = useNavigate();
+  const maxDate = new Date().toISOString().split("T")[0];
 
   const handleMainTabChange = (_, newValue) => {
-    if (newValue === "login") {
-      navigate("/login");
-    } else {
-      setMainTab(newValue);
-    }
+    if (newValue === "login") navigate("/login");
+    else setMainTab(newValue);
   };
 
   const handleSignupTabChange = (_, newValue) => setSignupTab(newValue);
-
   const handleOtpOpen = () => {
-    if (/^\d{10,15}$/.test(phone)) {
-      setOtpOpen(true);
-    } else {
-      alert("Please enter a valid phone number (10–15 digits).");
-    }
+    if (/^\d{10,15}$/.test(phone)) setOtpOpen(true);
+    else alert("Please enter a valid phone number (10–15 digits).");
   };
-
   const handleOtpClose = () => setOtpOpen(false);
-
   const handleOtpChange = (e) => {
     const value = e.target.value.replace(/\D/g, "");
     if (value.length <= 4) setOtp(value);
   };
-
-  const maxDate = new Date().toISOString().split("T")[0];
 
   const renderSocialButtons = () => (
     <>
@@ -73,155 +63,182 @@ const Register = () => {
   return (
     <Box sx={{ display: "flex", backgroundColor: "#f4f7f9", minHeight: "100vh" }}>
       <Container maxWidth="md" sx={{ mt: 5, mb: 8, flex: 1 }}>
+        {/* Main Tabs: Signup / Login */}
         <Tabs value={mainTab} onChange={handleMainTabChange} centered sx={{ mb: 3 }}>
           <Tab label="Sign Up" value="signup" />
           <Tab label="Log In" value="login" />
         </Tabs>
+
         <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>
           Sign up
         </Typography>
         <Divider sx={{ mb: 3 }} />
 
-        {mainTab === "signup" && (
-          <>
-            <Tabs value={signupTab} onChange={handleSignupTabChange} centered>
-              <Tab label="Email" value="email" />
-              <Tab label="Phone" value="phone" />
-            </Tabs>
+        {/* Sub-tabs for Excursionist / Tour Operator */}
+        <Tabs value={signupTab} onChange={handleSignupTabChange} centered>
+          <Tab label="Sign up as Excursionist" value="email" />
+          <Tab label="Sign up as Tour Operator" value="phone" />
+        </Tabs>
 
-            <Box mt={4}>
-              {/* Email Sign Up */}
-              {signupTab === "email" && (
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>{renderSocialButtons()}</Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField fullWidth label="First Name" required />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField fullWidth label="Last Name" required />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <FormControl fullWidth>
-                      <InputLabel>Gender</InputLabel>
-                      <Select required defaultValue="">
-                        <MenuItem value="Male">Male</MenuItem>
-                        <MenuItem value="Female">Female</MenuItem>
-                        <MenuItem value="Other">Other</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      type="date"
-                      label="Date of Birth"
-                      fullWidth
-                      required
-                      InputLabelProps={{ shrink: true }}
-                      inputProps={{ max: maxDate }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField fullWidth label="Email Address" type="email" required />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField fullWidth label="Password" type="password" required />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField fullWidth label="Confirm Password" type="password" required />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Button fullWidth variant="contained" sx={{ backgroundColor: "#247a7e" }}>
-                      Sign Up
-                    </Button>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="body2" align="center" sx={{ mt: 2, color: "text.secondary" }}>
-                    {"*"}By clicking Sign Up, you agree to our{" "}
-                      <a href="/terms">Terms</a>, <a href="/privacy">Privacy Policy</a>, and{" "}
-                      <a href="/cookies">Cookies Policy</a>. You may receive SMS notifications from us and can opt out at any time.
-                    </Typography>
-                  </Grid>
-                </Grid>
-              )}
+        <Box mt={4}>
+          {/* === Excursionist SignUp Form === */}
+          {signupTab === "email" && (
+            <Grid container spacing={2}>
+              <Grid item xs={12}>{renderSocialButtons()}</Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField fullWidth label="First Name" required />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField fullWidth label="Last Name" required />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Gender</InputLabel>
+                  <Select required defaultValue="">
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  type="date"
+                  label="Date of Birth"
+                  fullWidth
+                  required
+                  InputLabelProps={{ shrink: true }}
+                  inputProps={{ max: maxDate }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField fullWidth label="Email Address" type="email" required />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField fullWidth label="Password" type="password" required />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField fullWidth label="Confirm Password" type="password" required />
+              </Grid>
+              <Grid item xs={12}>
+                <Button fullWidth variant="contained" sx={{ backgroundColor: "#247a7e" }}>
+                  Sign Up
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" align="center" sx={{ mt: 2, color: "text.secondary" }}>
+                  {"*"}By clicking Sign Up, you agree to our{" "}
+                  <a href="/terms">Terms</a>, <a href="/privacy">Privacy Policy</a>, and{" "}
+                  <a href="/cookies">Cookies Policy</a>. You may receive SMS notifications from us and can opt out at any time.
+                </Typography>
+              </Grid>
+            </Grid>
+          )}
 
-              {/* Phone Sign Up */}
-              {signupTab === "phone" && (
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>{renderSocialButtons()}</Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField fullWidth label="First Name" required />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField fullWidth label="Last Name" required />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <FormControl fullWidth>
-                      <InputLabel>Gender</InputLabel>
-                      <Select required defaultValue="">
-                        <MenuItem value="Male">Male</MenuItem>
-                        <MenuItem value="Female">Female</MenuItem>
-                        <MenuItem value="Other">Other</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      type="date"
-                      label="Date of Birth"
-                      fullWidth
-                      required
-                      InputLabelProps={{ shrink: true }}
-                      inputProps={{ max: maxDate }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Box display="flex" gap={2}>
-                      <FormControl sx={{ minWidth: 100 }}>
-                        <Select value={countryCode} onChange={(e) => setCountryCode(e.target.value)}>
-                          <MenuItem value="+92">PK (+92)</MenuItem>
-                          <MenuItem value="+1">US (+1)</MenuItem>
-                          <MenuItem value="+44">UK (+44)</MenuItem>
-                        </Select>
-                      </FormControl>
-                      <TextField
-                        fullWidth
-                        label="Phone Number"
-                        type="tel"
-                        required
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
-                        inputProps={{ maxLength: 15 }}
-                      />
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField fullWidth label="Password" type="password" required />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField fullWidth label="Confirm Password" type="password" required />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      sx={{ backgroundColor: "#247a7e" }}
-                      onClick={handleOtpOpen}
-                    >
-                      Send OTP
-                    </Button>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="body2" align="center" sx={{ mt: 2, color: "text.secondary" }}>
-                      {"*"}By clicking Sign Up, you agree to our{" "}
-                      <a href="/terms">Terms</a>, <a href="/privacy">Privacy Policy</a>, and{" "}
-                      <a href="/cookies">Cookies Policy</a>. You may receive SMS notifications from us and can opt out at any time.
-                    </Typography>
-                  </Grid>
-                </Grid>
-              )}
-            </Box>
-          </>
-        )}
+          {/* === Tour Operator SignUp Form === */}
+          {signupTab === "phone" && (
+            <Grid container spacing={2}>
+              <Grid item xs={12}>{renderSocialButtons()}</Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField fullWidth label="First Name" required />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField fullWidth label="Last Name" required />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Gender</InputLabel>
+                  <Select required defaultValue="">
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              {/* Company Name */}
+              <Grid item xs={12} sm={6}>
+                <TextField fullWidth label="Company Name" required />
+              </Grid>
+
+              {/* Established In */}
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Established In</InputLabel>
+                  <Select required defaultValue="">
+                    {Array.from({ length: 50 }, (_, i) => {
+                      const year = new Date().getFullYear() - i;
+                      return <MenuItem key={year} value={year}>{year}</MenuItem>;
+                    })}
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              {/* Upload Portfolio */}
+              <Grid item xs={12} sm={6}>
+                <Button
+                  variant="outlined"
+                  fullWidth
+                  sx={{ height: "100%" }}
+                  onClick={() => navigate("/resume")}
+                >
+                  Upload Portfolio
+                </Button>
+              </Grid>
+
+              {/* Phone Number */}
+              <Grid item xs={12}>
+                <Box display="flex" gap={2}>
+                  <FormControl sx={{ minWidth: 100 }}>
+                    <Select value={countryCode} onChange={(e) => setCountryCode(e.target.value)}>
+                      <MenuItem value="+92">PK (+92)</MenuItem>
+                      <MenuItem value="+1">US (+1)</MenuItem>
+                      <MenuItem value="+44">UK (+44)</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <TextField
+                    fullWidth
+                    label="Phone Number"
+                    type="tel"
+                    required
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
+                    inputProps={{ maxLength: 15 }}
+                  />
+                </Box>
+              </Grid>
+
+              {/* Password */}
+              <Grid item xs={12}>
+                <TextField fullWidth label="Password" type="password" required />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField fullWidth label="Confirm Password" type="password" required />
+              </Grid>
+
+              {/* OTP Send Button */}
+              <Grid item xs={12}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  sx={{ backgroundColor: "#247a7e" }}
+                  onClick={handleOtpOpen}
+                >
+                  Send OTP
+                </Button>
+              </Grid>
+
+              {/* Policy Note */}
+              <Grid item xs={12}>
+                <Typography variant="body2" align="center" sx={{ mt: 2, color: "text.secondary" }}>
+                  {"*"}By clicking Sign Up, you agree to our{" "}
+                  <a href="/terms">Terms</a>, <a href="/privacy">Privacy Policy</a>, and{" "}
+                  <a href="/cookies">Cookies Policy</a>. You may receive SMS notifications from us and can opt out at any time.
+                </Typography>
+              </Grid>
+            </Grid>
+          )}
+        </Box>
 
         {/* OTP Modal */}
         <Modal open={otpOpen} onClose={handleOtpClose}>
@@ -260,7 +277,7 @@ const Register = () => {
         </Modal>
       </Container>
 
-      {/* Right Side - Images */}
+      {/* Right Side Images */}
       <Box
         sx={{
           flex: 1,
