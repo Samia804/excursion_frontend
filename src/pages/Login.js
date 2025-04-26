@@ -12,12 +12,13 @@ import { Link, useNavigate } from "react-router-dom";
 import mountain from "../assets/mountain.png";
 
 const Login = () => {
-  const [isExcursionist, setIsExcursionist] = useState(true);
+  const [isExcursionist, setIsExcursionist] = useState(true); // Toggle between user types
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [mainTab, setMainTab] = useState("login");
 
   const navigate = useNavigate();
 
+  // Handle tab switch (Sign Up / Log In)
   const handleMainTabChange = (_, newValue) => {
     if (newValue === "signup") {
       navigate("/register");
@@ -26,18 +27,26 @@ const Login = () => {
     }
   };
 
+  // Handle input field updates
   const handleChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
 
+  // Handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(isExcursionist ? "Excursionist Login" : "Tour Operator Login", loginData);
+
+    // Simulate login (Replace with actual auth logic)
+    if (isExcursionist) {
+      navigate("/"); // Optional: or navigate("/") for Home
+    } else {
+      navigate("/operator-dashboard"); // Goes to Dashboard.js
+    }
   };
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh", backgroundColor: "#F4F7F9" }}>
-      {/* Left Side - Form */}
+      {/* Left - Login Form */}
       <Box sx={{ flex: 1, p: 4 }}>
         {/* Top Tabs */}
         <Tabs value={mainTab} onChange={handleMainTabChange} centered sx={{ mb: 3 }}>
@@ -45,12 +54,13 @@ const Login = () => {
           <Tab label="Log In" value="login" />
         </Tabs>
 
+        {/* Heading */}
         <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>
           {isExcursionist ? "Log In as Excursionist" : "Log In as Tour Operator"}
         </Typography>
         <Divider sx={{ mb: 3 }} />
 
-        {/* Login Form */}
+        {/* Login Form Box */}
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -61,15 +71,13 @@ const Login = () => {
             border: isExcursionist ? "1px solid #D0D7DE" : "2px dashed #1e6c70",
           }}
         >
-          {/* Social Login */}
+          {/* Social Login Buttons */}
           <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
             {!isExcursionist ? (
-              // Only Google for Tour Operator
               <Button variant="contained" fullWidth sx={{ backgroundColor: "#db4437" }}>
                 Login with Google
               </Button>
             ) : (
-              // Facebook + Google for Excursionist
               <>
                 <Button variant="contained" fullWidth sx={{ backgroundColor: "#3b5998" }}>
                   Login with Facebook
@@ -83,7 +91,7 @@ const Login = () => {
 
           <Divider sx={{ my: 2 }}>OR</Divider>
 
-          {/* Email Fields */}
+          {/* Email & Password Fields */}
           <TextField
             fullWidth
             label="Email Address"
@@ -114,21 +122,19 @@ const Login = () => {
             Log In
           </Button>
 
-          {/* Switch Role */}
+          {/* Switch Role Button */}
           <Divider sx={{ my: 3 }}>OR</Divider>
           <Button
             variant="outlined"
             fullWidth
             onClick={() => setIsExcursionist(!isExcursionist)}
           >
-            {isExcursionist
-              ? "Login as Tour Operator"
-              : "Login as Excursionist"}
+            {isExcursionist ? "Login as Tour Operator" : "Login as Excursionist"}
           </Button>
         </Box>
       </Box>
 
-      {/* Right Side - Image */}
+      {/* Right - Image */}
       <Box
         sx={{
           flex: 1,
