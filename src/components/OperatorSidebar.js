@@ -7,10 +7,10 @@ import {
   Edit,
   Star,
   Settings,
-  BarChart2,
   CalendarDays,
   Bell,
   LogOut,
+  UserCircle,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -20,13 +20,12 @@ const OperatorSidebar = () => {
 
   const menuItems = [
     { label: "Dashboard", icon: <LayoutDashboard />, path: "/operator-dashboard" },
-    { label: "Custom Trips", icon: <Edit />, path: "/custom-trips" },
-    { label: "Bid Itineraries", icon: <List />, path: "/bid-itineraries" },
-    { label: "Reviews", icon: <Star />, path: "/reviews" },
-    { label: "Calendar", icon: <CalendarDays />, path: "/calendar" },
-    { label: "Analytics", icon: <BarChart2 />, path: "/analytics" },
-    { label: "Notifications", icon: <Bell />, path: "/notifications" },
-    { label: "Settings", icon: <Settings />, path: "/settings" },
+    { label: "Custom Trips Request", icon: <Edit />, path: "/custom-bid" },
+    { label: "Reviews", icon: <Star />, path: "/operator-reviews" },
+    { label: "Calendar", icon: <CalendarDays />, path: "/calendar-page" },
+    { label: "Notifications", icon: <Bell />, path: "/operator-notifications" },
+    { label: "Settings", icon: <Settings />, path: "/operator-settings" },
+    { label: "Profile", icon: <UserCircle />, path: "/operator-profile" }, // ✅ Added Profile
     { label: "Logout", icon: <LogOut />, path: "/login" },
   ];
 
