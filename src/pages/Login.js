@@ -12,11 +12,13 @@ import { Link, useNavigate } from "react-router-dom";
 import mountain from "../assets/mountain.png";
 
 const Login = () => {
-  const [isExcursionist, setIsExcursionist] = useState(true);
+  const [isExcursionist, setIsExcursionist] = useState(true); // Toggle between user types
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [mainTab, setMainTab] = useState("login");
+
   const navigate = useNavigate();
 
+  // Handle tab switch (Sign Up / Log In)
   const handleMainTabChange = (_, newValue) => {
     if (newValue === "signup") {
       navigate("/register");
@@ -25,49 +27,40 @@ const Login = () => {
     }
   };
 
+  // Handle input field updates
   const handleChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
 
+  // Handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (loginData.email && loginData.password) {
-      // ✅ Save login state in localStorage
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userRole", isExcursionist ? "excursionist" : "operator");
-
-      console.log(
-        isExcursionist ? "Excursionist Logged In" : "Operator Logged In",
-        loginData
-      );
-
-      // ✅ Navigate to respective dashboards
-      if (isExcursionist) {
-        navigate("/profile");
-      } else {
-        navigate("/operator-dashboard");
-      }
+    // Simulate login (Replace with actual auth logic)
+    if (isExcursionist) {
+      navigate("/"); // Optional: or navigate("/") for Home
     } else {
-      alert("Please enter both email and password.");
+      navigate("/operator-dashboard"); // Goes to Dashboard.js
     }
   };
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh", backgroundColor: "#F4F7F9" }}>
-      {/* Left Form */}
+      {/* Left - Login Form */}
       <Box sx={{ flex: 1, p: 4 }}>
+        {/* Top Tabs */}
         <Tabs value={mainTab} onChange={handleMainTabChange} centered sx={{ mb: 3 }}>
           <Tab label="Sign Up" value="signup" />
           <Tab label="Log In" value="login" />
         </Tabs>
 
+        {/* Heading */}
         <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>
           {isExcursionist ? "Log In as Excursionist" : "Log In as Tour Operator"}
         </Typography>
         <Divider sx={{ mb: 3 }} />
 
-        {/* Login Form */}
+        {/* Login Form Box */}
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -78,7 +71,7 @@ const Login = () => {
             border: isExcursionist ? "1px solid #D0D7DE" : "2px dashed #1e6c70",
           }}
         >
-          {/* Social Logins */}
+          {/* Social Login Buttons */}
           <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
             {!isExcursionist ? (
               <Button variant="contained" fullWidth sx={{ backgroundColor: "#db4437" }}>
@@ -98,7 +91,7 @@ const Login = () => {
 
           <Divider sx={{ my: 2 }}>OR</Divider>
 
-          {/* Email/Password */}
+          {/* Email & Password Fields */}
           <TextField
             fullWidth
             label="Email Address"
@@ -117,18 +110,20 @@ const Login = () => {
             margin="normal"
           />
 
+          {/* Forgot Password */}
           <Typography variant="body2" align="right" sx={{ mt: 1 }}>
             <Link to="/forgot-password" style={{ color: "#007b83", textDecoration: "none" }}>
               Forgot Password?
             </Link>
           </Typography>
 
+          {/* Submit Button */}
           <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
             Log In
           </Button>
 
+          {/* Switch Role Button */}
           <Divider sx={{ my: 3 }}>OR</Divider>
-
           <Button
             variant="outlined"
             fullWidth
@@ -139,7 +134,7 @@ const Login = () => {
         </Box>
       </Box>
 
-      {/* Right Image */}
+      {/* Right - Image */}
       <Box
         sx={{
           flex: 1,
@@ -149,7 +144,12 @@ const Login = () => {
           p: 3,
         }}
       >
-        <Box component="img" src={mountain} alt="Mountain" sx={{ width: "80%", borderRadius: 2 }} />
+        <Box
+          component="img"
+          src={mountain}
+          alt="Mountain"
+          sx={{ width: "80%", borderRadius: 2 }}
+        />
       </Box>
     </Box>
   );

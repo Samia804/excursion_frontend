@@ -27,6 +27,8 @@ const Navbar = () => {
     setIsLoggedIn(loggedIn); // 🔁 This sets the local state based on the flag
   }, []);
 
+  localStorage.setItem("isLoggedIn", "true")
+
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
