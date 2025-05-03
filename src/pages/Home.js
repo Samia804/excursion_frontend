@@ -18,7 +18,6 @@ import destination3 from "../assets/destination3.png";
 import destination4 from "../assets/destination4.png";
 import aboutImage from "../assets/mountain.png";
 
-// Destinations to show in Top Destinations section
 const destinations = [
   {
     title: "Naran & Kaghan Valley – Scenic beauty and alpine lakes.",
@@ -37,11 +36,19 @@ const destinations = [
   { title: "Lahore & Islamabad City Tours – A blend of history and culture.", image: destination1 },
 ];
 
-const Home = () => {
-  const [searchQuery, setSearchQuery] = useState(""); // Input state
-  const navigate = useNavigate(); // For redirecting to chat page
+const slugify = (str) =>
+  str
+    .split("–")[0]
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 
-  // Called on search button or pressing Enter
+const Home = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+
   const handleSearch = () => {
     if (searchQuery.trim()) {
       navigate(`/chat?query=${encodeURIComponent(searchQuery)}`);
@@ -50,7 +57,6 @@ const Home = () => {
 
   return (
     <>
-      {/* Hero Section with background and search box */}
       <Box
         sx={{
           height: 500,
@@ -69,8 +75,6 @@ const Home = () => {
           <Typography variant="h4" fontWeight="bold" gutterBottom>
             Hi, I'm Lara—Your Personal Travel Agent
           </Typography>
-
-          {/* Search Input & Button */}
           <Box
             sx={{
               mt: 3,
@@ -88,7 +92,6 @@ const Home = () => {
               placeholder="Search your destination..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              // Allow Enter key to trigger search
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleSearch();
               }}
@@ -104,14 +107,11 @@ const Home = () => {
         </Box>
       </Box>
 
-      {/* Why Choose Us Section */}
       <Container sx={{ py: 8, textAlign: "center" }}>
         <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ color: "#894e06" }}>
           Why Choose Us?
         </Typography>
-
         <Grid container spacing={4} justifyContent="center" mt={4}>
-          {/* Card 1 */}
           <Grid item xs={12} sm={4}>
             <Box>
               <Box
@@ -137,8 +137,6 @@ const Home = () => {
               </Typography>
             </Box>
           </Grid>
-
-          {/* Card 2 */}
           <Grid item xs={12} sm={4}>
             <Box>
               <Box
@@ -164,8 +162,6 @@ const Home = () => {
               </Typography>
             </Box>
           </Grid>
-
-          {/* Card 3 */}
           <Grid item xs={12} sm={4}>
             <Box>
               <Box
@@ -194,7 +190,6 @@ const Home = () => {
         </Grid>
       </Container>
 
-      {/* Top Destinations Section */}
       <Container sx={{ py: 6 }}>
         <Typography variant="h4" fontWeight="bold" textAlign="center" gutterBottom>
           Top Destinations
@@ -233,12 +228,16 @@ const Home = () => {
                   </Typography>
                   <span>🤍</span>
                 </Box>
-
                 <Box sx={{ p: 2, background: "rgba(0,0,0,0.5)" }}>
                   <Typography fontSize="0.85rem">{dest.title}</Typography>
                   <Box display="flex" justifyContent="space-between" mt={1}>
                     <Typography fontSize="0.75rem">Destination Travel</Typography>
-                    <Button size="small" variant="contained" sx={{ backgroundColor: "#8e502b" }}>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      sx={{ backgroundColor: "#8e502b" }}
+                      onClick={() => navigate(`/destination/${slugify(dest.title)}`)}
+                    >
                       Explore
                     </Button>
                   </Box>
@@ -249,7 +248,6 @@ const Home = () => {
         </Grid>
       </Container>
 
-      {/* About Us Section */}
       <Container sx={{ py: 8 }}>
         <Typography
           variant="h4"
@@ -269,9 +267,7 @@ const Home = () => {
         >
           Learn ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore e
         </Typography>
-
         <Grid container spacing={6} alignItems="center">
-          {/* About image */}
           <Grid item xs={12} md={6}>
             <img
               src={aboutImage}
@@ -282,8 +278,6 @@ const Home = () => {
               }
             />
           </Grid>
-
-          {/* About content */}
           <Grid item xs={12} md={6}>
             {[
               {
@@ -309,7 +303,6 @@ const Home = () => {
                 </Box>
               </Box>
             ))}
-
             <Button variant="contained" sx={{ backgroundColor: "#247a7e" }}>
               Learn More
             </Button>
