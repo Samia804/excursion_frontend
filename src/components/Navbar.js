@@ -11,7 +11,7 @@ import {
   Avatar,
 } from "@mui/material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Logo from "../assets/logo.png";
+import Logo from "../assets/logo.png"; // Make sure this logo exists
 
 const Navbar = () => {
   const location = useLocation();
@@ -27,11 +27,7 @@ const Navbar = () => {
     setIsLoggedIn(loggedIn); // 🔁 This sets the local state based on the flag
   }, []);
 
-  // 📦 To turn ON login manually for testing (e.g., from browser console):
   localStorage.setItem("isLoggedIn", "true")
-
-  // ❌ To turn OFF login:
-  //localStorage.setItem("isLoggedIn", "false")
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -122,14 +118,23 @@ const Navbar = () => {
                 <Avatar sx={{ bgcolor: "#247a7e" }}>U</Avatar>
               </IconButton>
               <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-                <MenuItem onClick={() => { navigate("/operator-dashboard"); handleMenuClose(); }}>
-                  Dashboard
+                <MenuItem onClick={() => { navigate("/profile"); handleMenuClose(); }}>
+                  Profile
                 </MenuItem>
-                <MenuItem onClick={() => { navigate("/calendar-page"); handleMenuClose(); }}>
-                  Trip History
+                <MenuItem onClick={() => { navigate("/past-trips"); handleMenuClose(); }}>
+                  Past Trips
                 </MenuItem>
-                <MenuItem onClick={() => { navigate("/reviews"); handleMenuClose(); }}>
-                  Reviews
+                <MenuItem onClick={() => { navigate("/upcoming-trips"); handleMenuClose(); }}>
+                  Upcoming Trips
+                </MenuItem>
+                <MenuItem onClick={() => { navigate("/messages"); handleMenuClose(); }}>
+                  Messages
+                </MenuItem>
+                <MenuItem onClick={() => { navigate("/wallet"); handleMenuClose(); }}>
+                  Wallet
+                </MenuItem>
+                <MenuItem onClick={() => { navigate("/settings"); handleMenuClose(); }}>
+                  Settings
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>
                   Logout
