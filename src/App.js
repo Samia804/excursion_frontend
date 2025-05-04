@@ -13,7 +13,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPW from "./pages/ForgotPW";
 import Dashboard from "./pages/Dashboard";
-import CustomTrip from "./pages/CustomTrip";
+//import CustomTrip from "./pages/CustomTrip";
+import DestinationList from "./pages/DestinationList"
 import Chat from "./pages/Chat";
 import Wallet from "./pages/Wallet";
 import Rewards from "./pages/Rewards";
@@ -100,6 +101,7 @@ function App() {
         <Route path="/services" element={<Services />} />
         <Route path="/contact-us" element={<Contact />} />
         <Route path="/resume" element={<Resume />} />
+        <Route path="/destination-list/:destination" element={<DestinationList />} />
         <Route path="/trip-overview/:id" element={<TripOverview />} />
         <Route path="/past-trip/:id" element={<PastTripDetails />} />
         <Route path="/upcoming-trip-details/:id" element={<UpcomingTripDetails />} />

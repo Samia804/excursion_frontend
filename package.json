@@ -6,10 +6,6 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.4",
-<<<<<<< HEAD
-=======
-    "@mui/lab": "^5.0.0-alpha.125",
->>>>>>> f79fe6b20343488446fc645beb05ea42c73e0be8
     "@mui/material": "^6.4.4",
     "@mui/x-date-pickers": "^8.1.0",
     "@testing-library/dom": "^10.4.0",
@@ -20,10 +16,7 @@
     "ajv-keywords": "^5.1.0",
     "axios": "^1.7.9",
     "chart.js": "^4.4.9",
-<<<<<<< HEAD
     "dayjs": "^1.11.13",
-=======
->>>>>>> f79fe6b20343488446fc645beb05ea42c73e0be8
     "lucide-react": "^0.487.0",
     "moment": "^2.30.1",
     "react": "^18.2.0",

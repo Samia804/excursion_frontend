@@ -48,7 +48,7 @@ const Navbar = () => {
   // 🌐 Navigation links shown in center
   const navLinks = [
     { label: "Home", path: "/" },
-    { label: "Top deals", path: "/destination-list" },
+    { label: "Top deals", path: "/destination-list/naran" },
     { label: "Custom trip form", path: "/custom-trip-form" },
     { label: "Services", path: "/services" },
     { label: "Contact us", path: "/contact-us" },
