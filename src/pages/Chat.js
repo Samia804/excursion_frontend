@@ -1,3 +1,4 @@
+// 🍴 All your imports go on top
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
@@ -10,7 +11,7 @@ import {
   Paper,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import image from "../assets/chatbg.png.jpg"; // Replace with actual scenic image
+import image from "../assets/chatbg.png.jpg"; // 🖼️ Background image
 
 const Chat = () => {
   const [searchParams] = useSearchParams();
@@ -24,9 +25,35 @@ const Chat = () => {
     }
   }, [userQuery]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!currentInput.trim()) return;
+
     setMessages((prev) => [...prev, { role: "user", content: currentInput }]);
+
+    try {
+      const response = await fetch("https://excursion-backend.onrender.com/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: currentInput }),
+      });
+
+      const data = await response.json();
+
+      if (data.trips && data.trips.length > 0) {
+        data.trips.slice(0, 3).forEach((trip) => {
+          const msg = `\u{1F4CD} ${trip.tripTitle} to ${trip.destination}\n\u{1F4B8} Rs ${trip.pricePerSeat}\n\u{1F4C5} ${trip.startDate} → ${trip.endDate}`;
+          setMessages((prev) => [...prev, { role: "assistant", content: msg }]);
+        });
+      } else {
+        setMessages((prev) => [...prev, { role: "assistant", content: "No matching trips found." }]);
+      }
+    } catch (error) {
+      console.error("❌ API error:", error);
+      setMessages((prev) => [...prev, { role: "assistant", content: "Something went wrong." }]);
+    }
+
     setCurrentInput("");
   };
 
@@ -45,10 +72,7 @@ const Chat = () => {
           backgroundColor: "#fff",
         }}
       >
-        <Typography
-          variant="h4"
-          sx={{ fontWeight: "bold", color: "#b88d6b", mb: 2 }}
-        >
+        <Typography variant="h4" sx={{ fontWeight: "bold", color: "#b88d6b", mb: 2 }}>
           Travel Made <br /> Easy with Lara
         </Typography>
         <Typography sx={{ color: "#999", mb: 4 }}>
@@ -65,6 +89,30 @@ const Chat = () => {
           <Button variant="contained" sx={{ backgroundColor: "#c9e2e1", color: "#000" }}>
             How about Hunza?
           </Button>
+        </Box>
+
+        <Box sx={{ maxHeight: 200, overflowY: "auto", mb: 2 }}>
+          {messages.map((msg, index) => (
+            <Box
+              key={index}
+              sx={{
+                display: "flex",
+                justifyContent: msg.role === "user" ? "flex-end" : "flex-start",
+                mb: 1,
+              }}
+            >
+              <Box
+                sx={{
+                  p: 1.5,
+                  borderRadius: 2,
+                  maxWidth: "80%",
+                  backgroundColor: msg.role === "user" ? "#d0f0f7" : "#f1f8e9",
+                }}
+              >
+                <Typography variant="body2" whiteSpace="pre-line">{msg.content}</Typography>
+              </Box>
+            </Box>
+          ))}
         </Box>
 
         <Paper

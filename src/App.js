@@ -1,6 +1,8 @@
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
+
+
 // Shared Components
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -12,7 +14,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPW from "./pages/ForgotPW";
-import Dashboard from "./pages/Dashboard";
+//import Dashboard from "./pages/Dashboard";
 //import CustomTrip from "./pages/CustomTrip";
 import DestinationList from "./pages/DestinationList"
 import Chat from "./pages/Chat";
