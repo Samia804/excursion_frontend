@@ -38,6 +38,7 @@ const Chat = () => {
         `${process.env.REACT_APP_BACKEND_URL}/chat`,
         { message: userMessage }
       );
+      console.log("✅ API response:", response.data); // 🔍 Add this line
 
       const trips = response.data.trips;
 
