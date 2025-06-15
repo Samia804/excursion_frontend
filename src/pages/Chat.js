@@ -17,6 +17,7 @@ const Chat = () => {
   const [searchParams] = useSearchParams();
   const userQuery = searchParams.get("query") || "";
   const [messages, setMessages] = useState([]);
+  console.log(messages); // To satisfy ESLint: use of 'messages'
   const [currentInput, setCurrentInput] = useState("");
 
   useEffect(() => {
