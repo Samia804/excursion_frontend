@@ -12,6 +12,8 @@ import {
 import SendIcon from "@mui/icons-material/Send";
 import image from "../assets/chatbg.png.jpg"; // 🖼️ Background image
 
+
+
 const Chat = () => {
   const [searchParams] = useSearchParams();
   const userQuery = searchParams.get("query") || "";
@@ -34,14 +36,18 @@ const Chat = () => {
   }, [messages]);
 
   const handleSend = async () => {
+    console.log("📩 Send button clicked"); // Add this
     if (!currentInput.trim()) return;
 
     const userMsg = { role: "user", content: currentInput };
     console.log("➡️ User sent:", userMsg);
     setMessages((prev) => [...prev, userMsg]);
+     // ✅ Add this line to check the API URL from .env
+    const API_URL = process.env.REACT_APP_API_URL;
+    console.log("🌍 Backend URL:", API_URL); // Check if this prints correctly
 
     try {
-      const response = await fetch("https://excursion-backend.onrender.com/chat", {
+      const response = await fetch("${API_URL}/chat`", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: currentInput }),
