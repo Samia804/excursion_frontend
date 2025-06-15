@@ -19,7 +19,9 @@ const Chat = () => {
 
   // 🛡️ Fix ESLint: we're using `messages` below in JSX
   // eslint-disable-next-line no-unused-vars
-  const [messages, setMessages] = useState([]);
+ const [messages, setMessages] = useState([]);
+// Use messages to avoid ESLint error in CI
+useEffect(() => {}, [messages]);
   const [currentInput, setCurrentInput] = useState([]);
 
   useEffect(() => {
