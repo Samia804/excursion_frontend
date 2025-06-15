@@ -16,10 +16,9 @@ import image from "../assets/chatbg.png.jpg"; // 🖼️ Background image
 const Chat = () => {
   const [searchParams] = useSearchParams();
   const userQuery = searchParams.get("query") || "";
+  const [currentInput, setCurrentInput] = useState("");
   const [messages, setMessages] = useState([]);
   console.log(messages); // To satisfy ESLint: use of 'messages'
-  const [currentInput, setCurrentInput] = useState("");
-
   useEffect(() => {
     if (userQuery.trim()) {
       setMessages((prev) => [...prev, { role: "user", content: userQuery }]);
