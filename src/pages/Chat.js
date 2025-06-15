@@ -1,4 +1,3 @@
-// 🍴 All your imports go on top
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
@@ -16,24 +15,30 @@ import image from "../assets/chatbg.png.jpg"; // 🖼️ Background image
 const Chat = () => {
   const [searchParams] = useSearchParams();
   const userQuery = searchParams.get("query") || "";
+  const [messages, setMessages] = useState([]);
+  const [currentInput, setCurrentInput] = useState("");
 
-  // 🛡️ Fix ESLint: we're using `messages` below in JSX
-  // eslint-disable-next-line no-unused-vars
- const [messages, setMessages] = useState([]);
-// Use messages to avoid ESLint error in CI
-useEffect(() => {}, [messages]);
-  const [currentInput, setCurrentInput] = useState([]);
+  console.log("🔍 Initial user query:", userQuery);
+  console.log("📬 Initial messages:", messages);
 
   useEffect(() => {
     if (userQuery.trim()) {
-      setMessages((prev) => [...prev, { role: "user", content: userQuery }]);
+      const newMsg = { role: "user", content: userQuery };
+      console.log("💬 Adding user query to messages:", newMsg);
+      setMessages((prev) => [...prev, newMsg]);
     }
   }, [userQuery]);
+
+  useEffect(() => {
+    console.log("🧠 Messages updated:", messages);
+  }, [messages]);
 
   const handleSend = async () => {
     if (!currentInput.trim()) return;
 
-    setMessages((prev) => [...prev, { role: "user", content: currentInput }]);
+    const userMsg = { role: "user", content: currentInput };
+    console.log("➡️ User sent:", userMsg);
+    setMessages((prev) => [...prev, userMsg]);
 
     try {
       const response = await fetch("https://excursion-backend.onrender.com/chat", {
@@ -43,17 +48,24 @@ useEffect(() => {}, [messages]);
       });
 
       const data = await response.json();
+      console.log("🛰️ API response received:", data);
 
       if (data.trips?.length > 0) {
-        data.trips.slice(0, 3).forEach((trip) => {
-          const msg = `📍 ${trip.tripTitle} to ${trip.destination}\n💸 Rs ${trip.pricePerSeat}\n📅 ${trip.startDate} → ${trip.endDate}`;
-          setMessages((prev) => [...prev, { role: "assistant", content: msg }]);
+        const tripMessages = data.trips.slice(0, 3).map((trip) => {
+          return {
+            role: "assistant",
+            content: `📍 ${trip.tripTitle} to ${trip.destination}\n💸 Rs ${trip.pricePerSeat}\n📅 ${trip.startDate} → ${trip.endDate}`
+          };
         });
+
+        console.log("✅ Parsed trip messages:", tripMessages);
+        setMessages((prev) => [...prev, ...tripMessages]);
       } else {
+        console.log("⚠️ No trips found");
         setMessages((prev) => [...prev, { role: "assistant", content: "No matching trips found." }]);
       }
     } catch (error) {
-      console.error("❌ API error:", error);
+      console.error("❌ API fetch error:", error);
       setMessages((prev) => [...prev, { role: "assistant", content: "Something went wrong." }]);
     }
 
