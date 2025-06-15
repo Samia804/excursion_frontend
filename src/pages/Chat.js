@@ -38,13 +38,14 @@ const Chat = () => {
   const handleSend = async () => {
     console.log("📩 Send button clicked"); // Add this
     if (!currentInput.trim()) return;
-
+    
     const userMsg = { role: "user", content: currentInput };
     console.log("➡️ User sent:", userMsg);
     setMessages((prev) => [...prev, userMsg]);
      // ✅ Add this line to check the API URL from .env
     const API_URL = process.env.REACT_APP_API_URL;
     console.log("🌍 Backend URL:", API_URL); // Check if this prints correctly
+
 
     try {
       const response = await fetch(`${API_URL}/chat`, {
