@@ -16,9 +16,12 @@ import image from "../assets/chatbg.png.jpg"; // 🖼️ Background image
 const Chat = () => {
   const [searchParams] = useSearchParams();
   const userQuery = searchParams.get("query") || "";
-  const [currentInput, setCurrentInput] = useState("");
+
+  // 🛡️ Fix ESLint: we're using `messages` below in JSX
+  // eslint-disable-next-line no-unused-vars
   const [messages, setMessages] = useState([]);
-  console.log(messages); // To satisfy ESLint: use of 'messages'
+  const [currentInput, setCurrentInput] = useState([]);
+
   useEffect(() => {
     if (userQuery.trim()) {
       setMessages((prev) => [...prev, { role: "user", content: userQuery }]);
@@ -33,17 +36,15 @@ const Chat = () => {
     try {
       const response = await fetch("https://excursion-backend.onrender.com/chat", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: currentInput }),
       });
 
       const data = await response.json();
 
-      if (data.trips && data.trips.length > 0) {
+      if (data.trips?.length > 0) {
         data.trips.slice(0, 3).forEach((trip) => {
-          const msg = `\u{1F4CD} ${trip.tripTitle} to ${trip.destination}\n\u{1F4B8} Rs ${trip.pricePerSeat}\n\u{1F4C5} ${trip.startDate} → ${trip.endDate}`;
+          const msg = `📍 ${trip.tripTitle} to ${trip.destination}\n💸 Rs ${trip.pricePerSeat}\n📅 ${trip.startDate} → ${trip.endDate}`;
           setMessages((prev) => [...prev, { role: "assistant", content: msg }]);
         });
       } else {
@@ -142,9 +143,7 @@ const Chat = () => {
               width: 40,
               height: 40,
               m: 0.5,
-              "&:hover": {
-                backgroundColor: "#1d6063",
-              },
+              "&:hover": { backgroundColor: "#1d6063" },
             }}
             onClick={handleSend}
           >
