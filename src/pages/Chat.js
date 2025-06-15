@@ -43,6 +43,7 @@ const Chat = () => {
     console.log("➡️ User sent:", userMsg);
     setMessages((prev) => [...prev, userMsg]);
      // ✅ Add this line to check the API URL from .env
+     
     const API_URL = process.env.REACT_APP_API_URL;
     console.log("🌍 Backend URL:", API_URL); // Check if this prints correctly
 
