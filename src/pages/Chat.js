@@ -18,135 +18,85 @@ const Chat = () => {
   const userQuery = searchParams.get("query") || "";
   const [messages, setMessages] = useState([]);
   const [currentInput, setCurrentInput] = useState("");
+  const [lastQuery, setLastQuery] = useState("");
 
-  // ✅ Friendly welcome message when chat starts
   useEffect(() => {
     setMessages([
       {
         role: "bot",
         content:
-          "Hey there! 😊 I'm Lara. Tell me where you want to go and I’ll show you some amazing trips!",
+          "Hey there! I'm Lara. Tell me where you want to go and I’ll show you some amazing trips!",
       },
     ]);
   }, []);
 
-  // ✅ If URL contains query param, load it as initial user message
   useEffect(() => {
     if (userQuery.trim()) {
       setMessages((prev) => [
         ...prev,
         { role: "user", content: userQuery },
       ]);
+      setCurrentInput(userQuery);
+      setTimeout(() => handleSend(userQuery), 300);
     }
   }, [userQuery]);
 
-  // ✅ Detect casual/fun messages
   const isChatty = (text) => {
-    const phrases = [
-      "hi", "hello", "sunna", "sunno", "abey", "bata", "acha",
-      "chal", "jannu", "kya hal", "suno",
-    ];
-    return phrases.some((phrase) =>
-      text.toLowerCase().includes(phrase)
-    );
+    const phrases = ["hi", "hello", "sunna", "sunno", "abey", "bata", "acha", "chal", "jannu", "kya hal", "suno"];
+    return phrases.some((phrase) => text.toLowerCase().includes(phrase));
   };
 
-  const handleSend = async () => {
-    const userMessage = currentInput.trim();
+  const handleSend = async (overrideInput = null) => {
+    const userMessage = (overrideInput || currentInput).trim();
     if (!userMessage) return;
 
-    setMessages((prev) => [
-      ...prev,
-      { role: "user", content: userMessage },
-    ]);
+    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
     setCurrentInput("");
+    setLastQuery(userMessage);
 
-    // ✅ Casual message? Respond without backend
     if (isChatty(userMessage)) {
       setMessages((prev) => [
         ...prev,
-        {
-          role: "bot",
-          content:
-            "Haha you're funny 😄 but tell me where we’re heading!",
-        },
+        { role: "bot", content: "Haha, you are witty but tell me where we’re heading!" },
       ]);
       return;
     }
 
-    // ✅ Real query → hit backend
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/chat`,
-        { message: userMessage }
-      );
+      const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/chat`, {
+        message: userMessage,
+      });
 
-      const trips = res.data.trips;
+      const trips = res.data.trips || [];
 
       if (!trips.length) {
         setMessages((prev) => [
           ...prev,
-          {
-            role: "bot",
-            content:
-              "No matching trips found. Try a different query!",
-          },
+          { role: "bot", content: "No matching trips found. Try a different query!" },
         ]);
       } else {
-        const formatted = trips
-          .map((trip) => {
-            return `🎒 ${trip.tripTitle}\n📍 ${trip.destination}\n💰 Rs.${trip.pricePerSeat}\n📅 ${trip.startDate} to ${trip.endDate}`;
-          })
-          .join("\n\n");
-
+        const formatted = trips.map((trip) => `🛍️ ${trip.tripTitle}\n📍 ${trip.destination}\n💰 Rs.${trip.pricePerSeat}\n📅 ${trip.startDate} to ${trip.endDate}`).join("\n\n");
         setMessages((prev) => [
           ...prev,
-          {
-            role: "bot",
-            content: "Here’s what I found for you! ✨",
-          },
-          {
-            role: "bot",
-            content: formatted,
-          },
+          { role: "bot", content: "Here’s what I found for you! ✨" },
+          { role: "bot", content: formatted },
         ]);
       }
     } catch (err) {
       console.error("❌ Backend error:", err);
       setMessages((prev) => [
         ...prev,
-        {
-          role: "bot",
-          content:
-            "❌ Something went wrong. Please try again later.",
-        },
+        { role: "bot", content: "Something went wrong. Please try again later." },
       ]);
     }
   };
 
   return (
     <Grid container sx={{ minHeight: "100vh" }}>
-      {/* 💬 Left: Chat Interface */}
-      <Grid
-        item
-        xs={12}
-        md={6}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          px: { xs: 3, md: 8 },
-          backgroundColor: "#fff",
-        }}
-      >
-        <Typography variant="h4" sx={{ fontWeight: "bold", color: "#b88d6b", mb: 2 }}>
-          Travel Made <br /> Easy with Lara
-        </Typography>
-        <Typography sx={{ color: "#999", mb: 4 }}>
-          Get inspired, ask questions, and plan your next trip effortlessly!
-        </Typography>
+      <Grid item xs={12} md={6} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", px: { xs: 3, md: 8 }, backgroundColor: "#fff" }}>
+        <Typography variant="h4" sx={{ fontWeight: "bold", color: "#b88d6b", mb: 2 }}>Travel Made <br /> Easy with Lara</Typography>
+        <Typography sx={{ color: "#999", mb: 4 }}>Get inspired, ask questions, and plan your next trip effortlessly!</Typography>
 
-        {/* 🧠 Suggested Quick Buttons */}
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 3 }}>
           {["Murree sounds perfect!", "I’d love to explore Lahore!", "How about Hunza?"].map((text, idx) => (
             <Button
@@ -155,7 +105,7 @@ const Chat = () => {
               sx={{ backgroundColor: "#c9e2e1", color: "#000" }}
               onClick={() => {
                 setCurrentInput(text);
-                setTimeout(() => handleSend(), 300);
+                setTimeout(() => handleSend(text), 300);
               }}
             >
               {text}
@@ -163,19 +113,7 @@ const Chat = () => {
           ))}
         </Box>
 
-        {/* 💬 Chat Bubbles */}
-        <Box
-          sx={{
-            flexGrow: 1,
-            overflowY: "auto",
-            maxHeight: "300px",
-            border: "1px solid #ddd",
-            borderRadius: 1,
-            p: 2,
-            backgroundColor: "#f9f9f9",
-            mb: 2,
-          }}
-        >
+        <Box sx={{ flexGrow: 1, overflowY: "auto", maxHeight: "300px", border: "1px solid #ddd", borderRadius: 1, p: 2, backgroundColor: "#f9f9f9", mb: 2 }}>
           {messages.map((msg, i) => (
             <Typography
               key={i}
@@ -195,16 +133,7 @@ const Chat = () => {
           ))}
         </Box>
 
-        {/* ✏️ Input Box */}
-        <Paper
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            border: "1px solid #ccc",
-            borderRadius: 1,
-            p: 0.5,
-          }}
-        >
+        <Paper sx={{ display: "flex", alignItems: "center", border: "1px solid #ccc", borderRadius: 1, p: 0.5 }}>
           <TextField
             fullWidth
             placeholder="Ask anything"
@@ -218,49 +147,18 @@ const Chat = () => {
             }}
           />
           <IconButton
-            onClick={handleSend}
-            sx={{
-              backgroundColor: "#247a7e",
-              color: "#fff",
-              borderRadius: 2,
-              width: 40,
-              height: 40,
-              m: 0.5,
-              "&:hover": { backgroundColor: "#1d6063" },
-            }}
+            onClick={() => handleSend()}
+            sx={{ backgroundColor: "#247a7e", color: "#fff", borderRadius: 2, width: 40, height: 40, m: 0.5, "&:hover": { backgroundColor: "#1d6063" } }}
           >
             <SendIcon />
           </IconButton>
         </Paper>
       </Grid>
 
-      {/* 🖼️ Right: Background Visual */}
-      <Grid
-        item
-        xs={12}
-        md={6}
-        sx={{
-          backgroundImage: `url(${image})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          position: "relative",
-        }}
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: 20,
-            left: "50%",
-            transform: "translateX(-50%)",
-            textAlign: "center",
-            color: "#fff",
-            px: 4,
-            width: "100%",
-          }}
-        >
+      <Grid item xs={12} md={6} sx={{ backgroundImage: `url(${image})`, backgroundSize: "cover", backgroundPosition: "center", position: "relative" }}>
+        <Box sx={{ position: "absolute", bottom: 20, left: "50%", transform: "translateX(-50%)", textAlign: "center", color: "#fff", px: 4, width: "100%" }}>
           <Typography variant="body2">
-            Ready for your next adventure? Start by asking me any travel
-            question, and I’ll guide you to the perfect trip!
+            Ready for your next adventure? Start by asking me any travel question, and I’ll guide you to the perfect trip!
           </Typography>
         </Box>
       </Grid>
