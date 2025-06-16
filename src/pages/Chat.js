@@ -11,7 +11,7 @@ import {
   Paper,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import image from "../assets/chatbg.png.jpg"; // Replace with actual scenic image
+import image from "../assets/chatbg.png.jpg"; // 📸 Replace with scenic image
 
 const Chat = () => {
   const [searchParams] = useSearchParams();
@@ -19,56 +19,114 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [currentInput, setCurrentInput] = useState("");
 
+  // ✅ Friendly welcome message when chat starts
+  useEffect(() => {
+    setMessages([
+      {
+        role: "bot",
+        content:
+          "Hey there! 😊 I'm Lara. Tell me where you want to go and I’ll show you some amazing trips!",
+      },
+    ]);
+  }, []);
+
+  // ✅ If URL contains query param, load it as initial user message
   useEffect(() => {
     if (userQuery.trim()) {
-      setMessages((prev) => [...prev, { role: "user", content: userQuery }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "user", content: userQuery },
+      ]);
     }
   }, [userQuery]);
 
+  // ✅ Detect casual/fun messages
+  const isChatty = (text) => {
+    const phrases = [
+      "hi", "hello", "sunna", "sunno", "abey", "bata", "acha",
+      "chal", "jannu", "kya hal", "suno",
+    ];
+    return phrases.some((phrase) =>
+      text.toLowerCase().includes(phrase)
+    );
+  };
+
   const handleSend = async () => {
-    if (!currentInput.trim()) return;
-
     const userMessage = currentInput.trim();
+    if (!userMessage) return;
 
-    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
+    setMessages((prev) => [
+      ...prev,
+      { role: "user", content: userMessage },
+    ]);
     setCurrentInput("");
 
+    // ✅ Casual message? Respond without backend
+    if (isChatty(userMessage)) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "bot",
+          content:
+            "Haha you're funny 😄 but tell me where we’re heading!",
+        },
+      ]);
+      return;
+    }
+
+    // ✅ Real query → hit backend
     try {
-      const response = await axios.post(
+      const res = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/chat`,
         { message: userMessage }
       );
-      console.log("✅ API response:", response.data); // 🔍 Add this line
 
-      const trips = response.data.trips;
+      const trips = res.data.trips;
 
-      if (trips.length === 0) {
+      if (!trips.length) {
         setMessages((prev) => [
           ...prev,
-          { role: "bot", content: "No matching trips found. Try a different query!" },
+          {
+            role: "bot",
+            content:
+              "No matching trips found. Try a different query!",
+          },
         ]);
       } else {
-        const reply = trips
-          .map(
-            (trip) =>
-              `🎒 ${trip.tripTitle}\n📍 ${trip.destination}\n💰 Rs.${trip.pricePerSeat}\n📅 ${trip.startDate} to ${trip.endDate}`
-          )
+        const formatted = trips
+          .map((trip) => {
+            return `🎒 ${trip.tripTitle}\n📍 ${trip.destination}\n💰 Rs.${trip.pricePerSeat}\n📅 ${trip.startDate} to ${trip.endDate}`;
+          })
           .join("\n\n");
 
-        setMessages((prev) => [...prev, { role: "bot", content: reply }]);
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "bot",
+            content: "Here’s what I found for you! ✨",
+          },
+          {
+            role: "bot",
+            content: formatted,
+          },
+        ]);
       }
-    } catch (error) {
-      console.error("Error contacting backend:", error);
+    } catch (err) {
+      console.error("❌ Backend error:", err);
       setMessages((prev) => [
         ...prev,
-        { role: "bot", content: "❌ Something went wrong. Try again later." },
+        {
+          role: "bot",
+          content:
+            "❌ Something went wrong. Please try again later.",
+        },
       ]);
     }
   };
 
   return (
     <Grid container sx={{ minHeight: "100vh" }}>
-      {/* Left Side - Chat UI */}
+      {/* 💬 Left: Chat Interface */}
       <Grid
         item
         xs={12}
@@ -88,18 +146,24 @@ const Chat = () => {
           Get inspired, ask questions, and plan your next trip effortlessly!
         </Typography>
 
+        {/* 🧠 Suggested Quick Buttons */}
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 3 }}>
-          <Button variant="contained" sx={{ backgroundColor: "#c9e2e1", color: "#000" }}>
-            Murree sounds perfect!
-          </Button>
-          <Button variant="contained" sx={{ backgroundColor: "#c9e2e1", color: "#000" }}>
-            I’d love to explore Lahore!
-          </Button>
-          <Button variant="contained" sx={{ backgroundColor: "#c9e2e1", color: "#000" }}>
-            How about Hunza?
-          </Button>
+          {["Murree sounds perfect!", "I’d love to explore Lahore!", "How about Hunza?"].map((text, idx) => (
+            <Button
+              key={idx}
+              variant="contained"
+              sx={{ backgroundColor: "#c9e2e1", color: "#000" }}
+              onClick={() => {
+                setCurrentInput(text);
+                setTimeout(() => handleSend(), 300);
+              }}
+            >
+              {text}
+            </Button>
+          ))}
         </Box>
 
+        {/* 💬 Chat Bubbles */}
         <Box
           sx={{
             flexGrow: 1,
@@ -112,9 +176,9 @@ const Chat = () => {
             mb: 2,
           }}
         >
-          {messages.map((msg, index) => (
+          {messages.map((msg, i) => (
             <Typography
-              key={index}
+              key={i}
               align={msg.role === "user" ? "right" : "left"}
               sx={{
                 backgroundColor: msg.role === "user" ? "#d1ecf1" : "#f0f0f0",
@@ -131,6 +195,7 @@ const Chat = () => {
           ))}
         </Box>
 
+        {/* ✏️ Input Box */}
         <Paper
           sx={{
             display: "flex",
@@ -148,8 +213,12 @@ const Chat = () => {
             value={currentInput}
             onChange={(e) => setCurrentInput(e.target.value)}
             sx={{ px: 2 }}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") handleSend();
+            }}
           />
           <IconButton
+            onClick={handleSend}
             sx={{
               backgroundColor: "#247a7e",
               color: "#fff",
@@ -157,18 +226,15 @@ const Chat = () => {
               width: 40,
               height: 40,
               m: 0.5,
-              "&:hover": {
-                backgroundColor: "#1d6063",
-              },
+              "&:hover": { backgroundColor: "#1d6063" },
             }}
-            onClick={handleSend}
           >
             <SendIcon />
           </IconButton>
         </Paper>
       </Grid>
 
-      {/* Right Side - Background */}
+      {/* 🖼️ Right: Background Visual */}
       <Grid
         item
         xs={12}
