@@ -72,7 +72,7 @@ const Chat = () => {
       if (!trips.length) {
         setMessages((prev) => [
           ...prev,
-          { role: "bot", content: "No matching trips found. Try a different query!" },
+          { role: "bot", content: " Try a different query!" },
         ]);
       } else {
         const formatted = trips.map((trip) => `🛍️ ${trip.tripTitle}\n📍 ${trip.destination}\n💰 Rs.${trip.pricePerSeat}\n📅 ${trip.startDate} to ${trip.endDate}`).join("\n\n");
